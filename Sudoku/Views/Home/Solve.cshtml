@@ -1,0 +1,80 @@
+﻿@model Sudoku.Models.SudokuSolutionModel
+
+@{
+    ViewBag.Title = "Solve";
+}
+
+@if (Model.Error != null)
+{
+    <p>@Model.Error</p>
+}
+else
+{
+    <table class="sudoku-puzzle-view">
+        
+        @for (int i = 0; i < Model.Solutions[0].Width; i++)
+        {
+            if (i != 0 && i % @Model.Solutions[0].WidthSqrt == 0)
+            {
+                <tr><td></td></tr>
+            }
+            
+            <tr>
+
+            @for (int j = 0; j < Model.Solutions[0].Width; j++)
+            {
+                if (j != 0 && j % @Model.Solutions[0].WidthSqrt == 0)
+                {
+                    <td></td>
+                }
+                
+                <td class="@(Model.Solutions[0].PuzzleText[(Model.Solutions[0].Width*i)+j] == '0' ? "solved" : "")"  >@(Model.Solutions[0].SolutionText[(Model.Solutions[0].Width*i)+j])</td>
+            }
+
+            </tr>
+        }
+
+    </table>
+   
+    <p>Solve time was @Math.Round(Model.TotalSolveTimeInMilliseconds,1) ms</p>
+    
+    <style>
+
+
+        .sudoku-puzzle-view td
+        {
+            width: 20px;
+            height: 20px;
+            font-family: Consolas;
+            font-weight: bold;
+            color: #2fa4be;
+        }
+
+        .sudoku-puzzle-view td.solved
+        {
+            color: #ff5b5b;
+            opacity: .01;
+        }
+            
+        .sudoku-puzzle-view tr 
+        {
+            width: 20px;
+        }
+        
+    </style>
+    
+    <script>
+
+        $(document).ready(function ()
+        {
+            setTimeout(function ()
+            {
+                $(".solved").each(function (a, b)
+                {
+                    $(this).animate({ opacity: 1 }, Math.random()*1500);
+                });
+            }, 500);
+        });
+
+    </script>
+}
