@@ -67,16 +67,16 @@ IF NOT DEFINED MSBUILD_PATH (
 echo Handling .NET Web Application deployment.
 
 :: 1. Build to the temporary path
-%MSBUILD_PATH% "%DEPLOYMENT_SOURCE%\sudoku\sudoku.csproj" /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="%DEPLOYMENT_TEMP%";AutoParameterizationWebConfigConnectionStrings=false;Configuration=Release /p:SolutionDir="%DEPLOYMENT_SOURCE%\.\\" %SCM_BUILD_ARGS%
+%MSBUILD_PATH% "%DEPLOYMENT_SOURCE%\Sudoku\sudoku.csproj" /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="%DEPLOYMENT_TEMP%";AutoParameterizationWebConfigConnectionStrings=false;Configuration=Release /p:SolutionDir="%DEPLOYMENT_SOURCE%\.\\" %SCM_BUILD_ARGS%
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 2. Build test proj
-%MSBUILD_PATH% "%DEPLOYMENT_SOURCE%\sudoku\TestSudoku\TestSudoku.csproj"
+%MSBUILD_PATH% "%DEPLOYMENT_SOURCE%\TestSudoku\TestSudoku.csproj"
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 3. Running tests
 echo Running tests
-vstest.console.exe "%DEPLOYMENT_SOURCE%\sudoku\TestSudoku\bin\Debug\TestSudoku.dll"
+vstest.console.exe "%DEPLOYMENT_SOURCE%\TestSudoku\bin\Debug\TestSudoku.dll"
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 4. KuduSync
